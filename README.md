@@ -1,2 +1,2 @@
 # Projet_GNS
-Projet de louis et michel
+Projet de Louis et Michel
