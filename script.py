@@ -2,14 +2,16 @@ import json
 from fonctions import *
 
 
-path="config_type.cfg"
+path1="config_type.cfg"
 
-with open(path, "r", encoding="utf-8") as fichier:
-    texte = fichier.readlines()
-print(texte)
+with open(path1, "r", encoding="utf-8") as fichier:
+    f_default = fichier.readlines()
 
-texte = insertion(texte, "!hostname position\n", ["hostname RX\n","test\n"," test décalé\n"])
+datas = import_data("data.json")
 
-
-with open(path, "w",encoding="utf-8") as fichier:
-    fichier.writelines(texte)
+print(BGP(datas,"R1","RIPng"))
+l_test = BGP(datas,"R1","RIPng")
+f_test = ["!iBGP"]
+f_test=insertion(f_test, "!iBGP",l_test)
+with open("test.cfg", "w", encoding="utf-8") as test:
+    test.writelines(f_test)
