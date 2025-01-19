@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Dict, List
 import json
+import os
 
 @dataclass
 class Interface:
@@ -78,7 +79,7 @@ def BGP(datas: Dict[str, Router], r_name: str, igp_process_name):
     #creéation du bloc de commandes à écrire dans le fichier de config
     as_n = datas[r_name].as_number
     BGP_bloc = ["router bgp 1",
-        "bgp router-id" + str(r_number) + "." +str(r_number) + "." +str(r_number) + "." + str(r_number),
+        " bgp router-id " + str(r_number) + "." +str(r_number) + "." +str(r_number) + "." + str(r_number),
         " bgp log-neighbor-changes",
         " no bgp default ipv4-unicast"]
     for i in n_list:
@@ -89,7 +90,7 @@ def BGP(datas: Dict[str, Router], r_name: str, igp_process_name):
             BGP_bloc.append(" neighbor " + datas[datas[r_name].eBGP_neighbor[i]].interfaces["1/0"].ip + " remote-as "+str(datas[datas[r_name].eBGP_neighbor[i]].as_number))
     BGP_bloc.append(" address-family ipv6")
     for i in n_list:
-        BGP_bloc.append("  neighbor" + i + " activate")
+        BGP_bloc.append("  neighbor " + i + " activate")
     if datas[r_name].is_border_router == True: #test si il faut mettre eBGP (routeur de bordure)
         for i in range(len(datas[r_name].eBGP_neighbor)):
             BGP_bloc.append("  neighbor " + datas[datas[r_name].eBGP_neighbor[i]].interfaces["1/0"].ip + " activate")
@@ -98,3 +99,11 @@ def BGP(datas: Dict[str, Router], r_name: str, igp_process_name):
     BGP_bloc.append(" exit-address-family")
     return BGP_bloc
 
+def clear():
+    datas=import_data("data.json")
+    for i in range(1,len(datas)):
+        path="R"+str(i)+".cfg"
+        if os.path.exists(path):
+            os.remove(path)
+        else:
+            print("Impossible de supprimer le fichier car il n'existe pas")
