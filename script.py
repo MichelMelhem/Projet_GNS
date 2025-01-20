@@ -14,22 +14,22 @@ clear()
 
 #création des fichiers de config de chaque routeurs
 for i in range(1, len(datas)+1):
-    f_curent = list(f_default)
+    f_curent = list(f_default) 
     r_name = "R" + str(i)
     nb_interfaces = len(datas[r_name].interfaces)
     number = datas[r_name].number
-  
 
     #protocole de routage (process name = RIPng ou 1)
     igp=datas[r_name].igp
     if igp=="rip":
         pr_name="RIPng"
-        bloc_igp=["ipv6 router rip RIPng", "redistribute connected"]
+        bloc_igp=["ipv6 router rip RIPng", " redistribute connected"]
     elif igp=="ospf":
         bloc_igp=["ipv6 router ospf 1", " router-id " + str(number)+"."+ str(number)+"."+ str(number)+"."+ str(number)+".", " redistribute connected"]
         pr_name = "1"
     else:
         pr_name="none"
+        bloc_igp=["!"]
 
     #création de chaque intrfaces
     bloc_interface = []
@@ -61,6 +61,6 @@ for i in range(1, len(datas)+1):
         config.writelines(f_curent) 
 
 
-    print(bloc_interface)
-    print(bloc_igp)
-    print(bloc_bgp)
+   # print(bloc_interface)
+   # print(bloc_igp)
+   # print(bloc_bgp)

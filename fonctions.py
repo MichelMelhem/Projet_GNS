@@ -59,7 +59,7 @@ def import_data(path: str) -> Dict[str, Router]:
         data = json.load(f)
     return parse_routers(data)
 
-def BGP(datas: Dict[str, Router], r_name: str, igp_process_name):
+def BGP(datas: Dict[str, Router], r_name: str, igp_process_name: str):
     """
     Permet d'ajouter la config iBGP aux routeurs qui ne sont pas ceux de bordure
     Arguments: 
@@ -83,8 +83,8 @@ def BGP(datas: Dict[str, Router], r_name: str, igp_process_name):
         " bgp log-neighbor-changes",
         " no bgp default ipv4-unicast"]
     for i in n_list:
-        BGP_bloc.append(" neighbor" + i + " remote-as " + str(as_n))
-        BGP_bloc.append(" neighbor" + i + " update-source loopback0")
+        BGP_bloc.append(" neighbor " + i + " remote-as " + str(as_n))
+        BGP_bloc.append(" neighbor " + i + " update-source loopback0")
     if datas[r_name].is_border_router == True: #test si il faut mettre eBGP (routeur de bordure)
         for i in range(len(datas[r_name].eBGP_neighbor)):
             BGP_bloc.append(" neighbor " + datas[datas[r_name].eBGP_neighbor[i]].interfaces["1/0"].ip + " remote-as "+str(datas[datas[r_name].eBGP_neighbor[i]].as_number))
