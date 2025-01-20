@@ -51,8 +51,13 @@ for i in range(1, len(datas)+1):
     #hostname
     insertion(f_curent, "!hostname\n",["hostname "+r_name,"!"])
 
+    #igp
     insertion(f_curent, "!igp\n", bloc_igp)
+
+    #interfaces
     insertion(f_curent, "!interfaces\n", bloc_interface)
+
+    #bgp
     insertion(f_curent, "!bgp\n", bloc_bgp)
 
     #écriture finale du fichier du routeur Ri
