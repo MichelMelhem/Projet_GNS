@@ -78,7 +78,7 @@ def BGP(datas: Dict[str, Router], r_name: str, igp_process_name: str):
 
     #creéation du bloc de commandes à écrire dans le fichier de config
     as_n = datas[r_name].as_number
-    BGP_bloc = ["router bgp 1",
+    BGP_bloc = ["router bgp " + str(as_n),
         " bgp router-id " + str(r_number) + "." +str(r_number) + "." +str(r_number) + "." + str(r_number),
         " bgp log-neighbor-changes",
         " no bgp default ipv4-unicast"]
