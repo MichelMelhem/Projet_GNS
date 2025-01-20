@@ -42,7 +42,10 @@ for i in range(1, len(datas)+1):
         bloc_interface.append(" ipv6 address "+address)
         bloc_interface.append(" ipv6 "+datas[r_name].igp+" "+pr_name+" enable")
         bloc_interface.append("!")
-
+    bloc_interface.append("interface Loopback0")
+    bloc_interface.append(" no ip address")
+    bloc_interface.append(" ipv6 address 2001::"+str(number)+"/128")
+    bloc_interface.append(" ipv6 "+igp+" "+pr_name+" enable")
     #création de BGP (avec l'appel de la focntion)
     bloc_bgp = BGP(datas,r_name,pr_name)
 
