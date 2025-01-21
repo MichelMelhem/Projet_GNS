@@ -25,7 +25,7 @@ for i in range(1, len(datas)+1):
         pr_name="RIPng"
         bloc_igp=["ipv6 router rip RIPng", " redistribute connected"]
     elif igp=="ospf":
-        bloc_igp=["ipv6 router ospf 1", " router-id " + str(number)+"."+ str(number)+"."+ str(number)+"."+ str(number)+".", " redistribute connected"]
+        bloc_igp=["ipv6 router ospf 1", " router-id " + str(number)+"."+ str(number)+"."+ str(number)+"."+ str(number), " redistribute connected"]
         pr_name = "1"
     else:
         pr_name="none"
@@ -40,7 +40,9 @@ for i in range(1, len(datas)+1):
         bloc_interface.append(" no ip address")
         bloc_interface.append(" negotiation auto")
         bloc_interface.append(" ipv6 address "+address)
-        bloc_interface.append(" ipv6 "+datas[r_name].igp+" "+pr_name+" enable")
+        if igp=="ospf":
+            bloc_interface.append(" ipv6 ospf " +pr_name +" area " +str(datas[r_name].as_number))
+        bloc_interface.append(" ipv6 "+igp+" "+pr_name+" enable")
         bloc_interface.append("!")
     bloc_interface.append("interface Loopback0")
     bloc_interface.append(" no ip address")
