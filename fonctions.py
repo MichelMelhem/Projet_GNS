@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass,field
 from typing import Dict, List
 import json
 import os
@@ -11,11 +11,54 @@ class Interface:
 class Router:
     number: int
     interfaces: Dict[str, Interface]
-    use_bgp: bool
     is_border_router: bool
     as_number: int
     igp: str
-    eBGP_neighbor: List[str]
+    eBGP_neighbor: List[str] = field(default_factory=list)
+    providers: List[str] = field(default_factory=list)
+    peers: List[str] = field(default_factory=list)
+    customers: List[str] = field(default_factory=list)
+    border_interfaces: List[str] = field(default_factory=list)
+
+def parse_router(data: dict) -> Router:
+    """Convertit un dictionnaire JSON en objet Router."""
+    interfaces = {key: Interface(**value) for key, value in data.get("interfaces", {}).items()}
+    return Router(
+        number=data["number"],
+        interfaces=interfaces,
+        is_border_router=data["is_border_router"],
+        as_number=data["as_number"],
+        igp=data["igp"],
+        eBGP_neighbor=data.get("eBGP_neighbor", []),
+        providers=data.get("providers", []),
+        peers=data.get("peers", []),
+        customers=data.get("customers", []),
+        border_interfaces=data.get("border_interfaces", [])  # Gestion des interfaces frontières
+    )
+
+def parse_routers(data: dict) -> Dict[str, Router]:
+    """Transforme un dictionnaire JSON en un dictionnaire d'objets Router."""
+    return {key: parse_router(value) for key, value in data.items()}
+
+def import_data(path: str) -> Dict[str, Router]:
+    """
+    Importe un fichier JSON et convertit son contenu en dictionnaire d'objets Router.
+    
+    Arguments:
+        path (str): Chemin vers le fichier JSON.
+    
+    Retourne:
+        Dict[str, Router]: Dictionnaire où la clé est le nom du routeur et la valeur est un objet Router.
+    """
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return parse_routers(data)
+
+# Exemple d'utilisation
+if __name__ == "__main__":
+    routers = import_data("routers.json")  # Remplacez par le bon chemin du fichier JSON
+    for name, router in routers.items():
+        print(f"Routeur {name}: {router}")
 
 def insertion(txt, indicateur, contenu):
     """la fonction pemet d'insérer du texte au niveau d'un indicateur 
@@ -28,36 +71,6 @@ def insertion(txt, indicateur, contenu):
                 for j in range(len(contenu)):
                     texte.insert(i+j, contenu[j]+"\n")
     return texte
-
-
-def parse_router(data: dict) -> Router:
-    interfaces = {key: Interface(**value) for key, value in data["interfaces"].items()}
-    return Router(
-        number=data["number"],
-        interfaces=interfaces,
-        use_bgp=data["use_bgp"],
-        is_border_router=data["is_border_router"],
-        as_number=data["as_number"],
-        igp=data["igp"],
-        eBGP_neighbor=data.get("eBGP_neighbor", [])
-    )
-
-def parse_routers(data: dict) -> Dict[str, Router]:
-    return {key: parse_router(value) for key, value in data.items()}
-
-def import_data(path: str) -> Dict[str, Router]:
-    """
-    Importer et mettre dans une structure (class) les routeurs d'un fichier JSON
-
-    Argument:
-        path, le chemin vers le fichier JSON
-
-    Renvoie:
-        un dictionaire de routeurs (où les clés sont les attribus et les valeurs les valeurs)
-    """
-    with open(path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    return parse_routers(data)
 
 def BGP(datas: Dict[str, Router], r_name: str, igp_process_name: str):
     """
@@ -97,7 +110,6 @@ def BGP(datas: Dict[str, Router], r_name: str, igp_process_name: str):
             BGP_bloc.append("  neighbor " + datas[datas[r_name].eBGP_neighbor[i]].interfaces["1/0"].ip.split('/')[0] + " activate")
     #BGP_bloc.append("  redistribute connected")
     #BGP_bloc.append("  redistribute " + datas[r_name].igp + " " + igp_process_name)
-    BGP_bloc.append("  network "+datas[r_name].interfaces["Loopback0"].ip.split("::")[0] + "::/" + datas[r_name].interfaces["Loopback0"].ip.split("/")[1])
     for i in range(1,nb_interfaces):
         BGP_bloc.append("  network "+datas[r_name].interfaces[str(i)+"/0"].ip.split("::")[0] + "::/" + datas[r_name].interfaces[str(i)+"/0"].ip.split("/")[1])  
     BGP_bloc.append("  redistribute " + datas[r_name].igp + " " + igp_process_name)  
