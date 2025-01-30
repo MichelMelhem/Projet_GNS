@@ -1,4 +1,20 @@
+import json
+import shutil
 from fonctions import *
+import gns3fy
+
+GNS3_SERVER_URL = "http://127.0.0.1:3080"
+PROJECT_NAME = "louisgns"  
+PROJECT_PATH = "/Users/michelmelhem/Downloads"
+
+
+gns3_server = gns3fy.Gns3Connector(GNS3_SERVER_URL)
+
+# Load the project
+project = gns3fy.Project(name=PROJECT_NAME, connector=gns3_server)
+project.get()
+
+
 
 #ouverture du fichier par default
 path1="config_type.cfg"
@@ -72,6 +88,21 @@ for i in range(1, len(datas)+1):
     with open(r_name+".cfg", "w", encoding="utf-8") as config:
         config.writelines(f_curent) 
 
+#copie des fichiers de config dans les routeurs et redémarage des routeurs
+
+print("Deploying the configuration files to the routers :")
+
+for node in project.nodes :
+    print(f"Deploying the configuration file to the router {node.name} ...")
+    routerNumber = datas[node.name].number
+    node.stop() 
+    dst = PROJECT_PATH + "/project-files/dynamips/" + node.node_id + "/configs/" +  f"i{routerNumber}_startup-config.cfg"
+    if os.path.exists(dst):
+        print(f"Destination file {dst} already exists. It will be overwritten.")
+        os.remove(dst)
+    shutil.copy("./" + node.name + ".cfg", dst)
+    node.start()   
+    print(f"Configuration file deployed to the router {node.name}.")
 
    # print(bloc_interface)
    # print(bloc_igp)
