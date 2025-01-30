@@ -97,9 +97,9 @@ def BGP(datas: Dict[str, Router], r_name: str, igp_process_name: str):
             BGP_bloc.append("  neighbor " + datas[datas[r_name].eBGP_neighbor[i]].interfaces["1/0"].ip.split('/')[0] + " activate")
     #BGP_bloc.append("  redistribute connected")
     #BGP_bloc.append("  redistribute " + datas[r_name].igp + " " + igp_process_name)
-    BGP_bloc.append(" network "+datas[r_name].interfaces["Loopback0"].ip.split("::")[0] + "::/" + datas[r_name].interfaces["Loopback0"].ip.split("/")[1])
+    BGP_bloc.append("  network "+datas[r_name].interfaces["Loopback0"].ip.split("::")[0] + "::/" + datas[r_name].interfaces["Loopback0"].ip.split("/")[1])
     for i in range(1,nb_interfaces):
-        BGP_bloc.append(" network "+datas[r_name].interfaces[str(i)+"/0"].ip.split("::")[0] + "::/" + datas[r_name].interfaces[str(i)+"/0"].ip.split("/")[1])  
+        BGP_bloc.append("  network "+datas[r_name].interfaces[str(i)+"/0"].ip.split("::")[0] + "::/" + datas[r_name].interfaces[str(i)+"/0"].ip.split("/")[1])  
     BGP_bloc.append("  redistribute " + datas[r_name].igp + " " + igp_process_name)  
     BGP_bloc.append(" exit-address-family")
     return BGP_bloc
