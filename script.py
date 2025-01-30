@@ -5,7 +5,7 @@ import gns3fy
 
 GNS3_SERVER_URL = "http://127.0.0.1:3080"
 PROJECT_NAME = "louisgns"  
-PROJECT_PATH = "/Users/michelmelhem/Downloads"
+PROJECT_PATH = "/home/louis/GNS3/projects/louisgns"
 
 
 gns3_server = gns3fy.Gns3Connector(GNS3_SERVER_URL)

@@ -18,6 +18,7 @@ class Router:
     providers: List[str] = field(default_factory=list)
     peers: List[str] = field(default_factory=list)
     customers: List[str] = field(default_factory=list)
+    neighbors_border_interfaces: List[str] = field(default_factory=list)
     border_interfaces: List[str] = field(default_factory=list)
 
 def parse_router(data: dict) -> Router:
@@ -33,7 +34,8 @@ def parse_router(data: dict) -> Router:
         providers=data.get("providers", []),
         peers=data.get("peers", []),
         customers=data.get("customers", []),
-        border_interfaces=data.get("border_interfaces", [])  # Gestion des interfaces frontières
+        neighbors_border_interfaces=data.get("neighbors_border_interfaces", []),
+        border_interfaces=data.get("border_interfaces", [])
     )
 
 def parse_routers(data: dict) -> Dict[str, Router]:
@@ -54,11 +56,6 @@ def import_data(path: str) -> Dict[str, Router]:
         data = json.load(f)
     return parse_routers(data)
 
-# Exemple d'utilisation
-if __name__ == "__main__":
-    routers = import_data("routers.json")  # Remplacez par le bon chemin du fichier JSON
-    for name, router in routers.items():
-        print(f"Routeur {name}: {router}")
 
 def insertion(txt, indicateur, contenu):
     """la fonction pemet d'insérer du texte au niveau d'un indicateur 
@@ -101,15 +98,13 @@ def BGP(datas: Dict[str, Router], r_name: str, igp_process_name: str):
         BGP_bloc.append(" neighbor " + i.split('/')[0] + " update-source Loopback0")
     if datas[r_name].is_border_router == True: #test si il faut mettre eBGP (routeur de bordure)
         for i in range(len(datas[r_name].eBGP_neighbor)):
-            BGP_bloc.append(" neighbor " + datas[datas[r_name].eBGP_neighbor[i]].interfaces["1/0"].ip.split('/')[0] + " remote-as "+str(datas[datas[r_name].eBGP_neighbor[i]].as_number))
+            BGP_bloc.append(" neighbor " + datas[datas[r_name].eBGP_neighbor[i]].interfaces[datas[r_name].neighbors_border_interfaces[i]].ip.split('/')[0] + " remote-as "+str(datas[datas[r_name].eBGP_neighbor[i]].as_number))
     BGP_bloc.append(" address-family ipv6")
     for i in n_list:
         BGP_bloc.append("  neighbor " + i.split('/')[0] + " activate")
     if datas[r_name].is_border_router == True: #test si il faut mettre eBGP (routeur de bordure)
-        for i in range(len(datas[r_name].eBGP_neighbor)):
-            BGP_bloc.append("  neighbor " + datas[datas[r_name].eBGP_neighbor[i]].interfaces["1/0"].ip.split('/')[0] + " activate")
-    #BGP_bloc.append("  redistribute connected")
-    #BGP_bloc.append("  redistribute " + datas[r_name].igp + " " + igp_process_name)
+        for i in range(len(datas[r_name].neighbors_border_interfaces)):
+            BGP_bloc.append("  neighbor " + datas[datas[r_name].eBGP_neighbor[i]].interfaces[datas[r_name].neighbors_border_interfaces[i]].ip.split('/')[0] + " activate")
     for i in range(1,nb_interfaces):
         BGP_bloc.append("  network "+datas[r_name].interfaces[str(i)+"/0"].ip.split("::")[0] + "::/" + datas[r_name].interfaces[str(i)+"/0"].ip.split("/")[1])  
     BGP_bloc.append("  redistribute " + datas[r_name].igp + " " + igp_process_name)  

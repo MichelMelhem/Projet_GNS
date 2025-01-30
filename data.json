@@ -4,6 +4,7 @@
         "interfaces": {
             "1/0": { "ip": "2001:100:4:1::1/64" },
             "2/0": { "ip": "2001:100:1:1::2/64" },
+            "3/0": { "ip": "2001:100:4:3::2/64" },
             "Loopback0": { "ip": "2001::1/128" }
         },
 
@@ -11,7 +12,8 @@
         "as_number": 1,
         "igp": "rip",
         "eBGP_neighbor": ["R4", "R9"],
-        "border_interfaces":["1/0","3/0"]
+        "neighbors_border_interfaces":["1/0","1/0"],
+        "border_interfaces":[]
 
     },
     "R2": {
@@ -19,15 +21,16 @@
         "interfaces": {
             "1/0": { "ip": "2001:100:4:2::1/64" },
             "2/0": { "ip": "2001:100:1:2::2/64" },
-            "3/0": { "ip": "2001:100:4:3::2/64" },
+            "3/0": { "ip": "2001:100:4:5::2/64" },
             "Loopback0": { "ip": "2001::2/128" }
         },
 
         "is_border_router": true,
         "as_number": 1,
         "igp": "rip",
-        "eBGP_neighbor": ["R5", "R9"],
-        "border_interfaces":["1/0","3/0"]
+        "eBGP_neighbor": ["R5", "R10"],
+        "neighbors_border_interfaces":["1/0","1/0"],
+        "border_interfaces":[]
     },
     "R3": {
         "number": 3,
@@ -42,6 +45,7 @@
         "as_number": 1,
         "igp": "rip",
         "eBGP_neighbor": [],
+        "neighbors_border_interfaces":[],
         "border_interfaces":[]
     },
     "R4": {
@@ -49,21 +53,23 @@
         "interfaces": {
             "1/0": { "ip": "2001:100:4:1::2/64" },
             "2/0": { "ip": "2001:100:2:1::1/64" },
+            "3/0": { "ip": "2001:100:4:4::2/64"},
             "Loopback0": { "ip": "2001::4/128" }
         },
 
         "is_border_router": true,
         "as_number": 2,
         "igp": "ospf",
-        "eBGP_neighbor": ["R1", "R10"],
-        "border_interfaces":["1/0","3/0"]
+        "eBGP_neighbor": ["R1", "R9"],
+        "neighbors_border_interfaces":["1/0","2/0"],
+        "border_interfaces":[]
     },
     "R5": {
         "number": 5,
         "interfaces": {
             "1/0": { "ip": "2001:100:4:2::2/64" },
             "2/0": { "ip": "2001:100:2:2::1/64" },
-            "3/0": { "ip": "2001:100:4:4::2/64" },
+            "3/0": { "ip": "2001:100:4:6::2/64" },
             "Loopback0": { "ip": "2001::5/128" }
         },
 
@@ -71,7 +77,8 @@
         "as_number": 2,
         "igp": "ospf",
         "eBGP_neighbor": ["R2", "R11"],
-        "border_interfaces":["1/0","3/0"]
+        "neighbors_border_interfaces":["1/0","1/0"],
+        "border_interfaces":[]
     },
     "R6": {
         "number": 6,
@@ -86,6 +93,7 @@
         "as_number": 2,
         "igp": "ospf",
         "eBGP_neighbor": [],
+        "neighbors_border_interfaces":[],
         "border_interfaces":[]
     },
     "R7": {
@@ -99,6 +107,7 @@
         "as_number": 1,
         "igp": "rip",
         "eBGP_neighbor": [],
+        "neighbors_border_interfaces":[],
         "border_interfaces":[]
     },
     "R8": {
@@ -112,25 +121,28 @@
         "as_number": 2,
         "igp": "ospf",
         "eBGP_neighbor": [],
+        "neighbors_border_interfaces":[],
         "border_interfaces":[]
     },
     "R9": {
         "number": 9,
         "interfaces": {
-            "1/0": { "ip": "2001:100:3:1::1/64" },
-            "2/0": { "ip": "2001:100:3:2::1/64" },
+            "1/0": { "ip": "2001:100:4:3::1/64" },
+            "2/0": { "ip": "2001:100:4:4::1/64" },
             "Loopback0": { "ip": "2001::9/128" }
         },
 
         "is_border_router": true,
         "as_number": 3,
         "igp": "ospf",
-        "eBGP_neighbor": ["R1", "R4"]
+        "eBGP_neighbor": ["R1", "R4"],
+        "neighbors_border_interfaces":["3/0","3/0"],
+        "border_interfaces":[]
     },
     "R10": {
         "number": 10,
         "interfaces": {
-            "1/0": { "ip": "2001:100:4:3::1/64" },
+            "1/0": { "ip": "2001:100:4:5::1/64" },
             "Loopback0": { "ip": "2001::10/128" }
         },
 
@@ -138,12 +150,13 @@
         "as_number": 4,
         "igp": "ospf",
         "eBGP_neighbor": ["R2"],
-        "border_interfaces":["1/0"]
+        "neighbors_border_interfaces":["3/0"],
+        "border_interfaces":[]
     },
     "R11": {
         "number": 11,
         "interfaces": {
-            "1/0": { "ip": "2001:100:4:4::1/64" },
+            "1/0": { "ip": "2001:100:4:6::1/64" },
             "Loopback0": { "ip": "2001::10/128" }
         },
 
@@ -151,6 +164,7 @@
         "as_number": 5,
         "igp": "ospf",
         "eBGP_neighbor": ["R5"],
-        "border_interfaces":["1/0"]
+        "neighbors_border_interfaces":["3/0"],
+        "border_interfaces":[]
     }
 }
