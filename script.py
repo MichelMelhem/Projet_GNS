@@ -1,4 +1,3 @@
-import json
 from fonctions import *
 
 #ouverture du fichier par default
@@ -27,9 +26,12 @@ for i in range(1, len(datas)+1):
     elif igp=="ospf":
         bloc_igp=["ipv6 router ospf 1", " router-id " + str(number)+"."+ str(number)+"."+ str(number)+"."+ str(number), " redistribute connected"]
         pr_name = "1"
+        for i in datas[r_name].border_interfaces:
+            bloc_igp.insert(-1, " passive-interface "+"GigagbitEthernet"+i)
     else:
         pr_name="none"
         bloc_igp=["!"]
+
 
     #création de chaque intrfaces
     bloc_interface = []
