@@ -13,7 +13,7 @@
         "igp": "rip",
         "eBGP_neighbor": ["R4", "R9"],
         "neighbors_border_interfaces":["1/0","1/0"],
-        "border_interfaces":[]
+        "border_interfaces":["1/0","3/0"]
 
     },
     "R2": {
@@ -30,7 +30,7 @@
         "igp": "rip",
         "eBGP_neighbor": ["R5", "R10"],
         "neighbors_border_interfaces":["1/0","1/0"],
-        "border_interfaces":[]
+        "border_interfaces":["1/0","3/0"]
     },
     "R3": {
         "number": 3,
@@ -62,7 +62,7 @@
         "igp": "ospf",
         "eBGP_neighbor": ["R1", "R9"],
         "neighbors_border_interfaces":["1/0","2/0"],
-        "border_interfaces":[]
+        "border_interfaces":["1/0","3/0"]
     },
     "R5": {
         "number": 5,
@@ -78,7 +78,7 @@
         "igp": "ospf",
         "eBGP_neighbor": ["R2", "R11"],
         "neighbors_border_interfaces":["1/0","1/0"],
-        "border_interfaces":[]
+        "border_interfaces":["1/0","3/0"]
     },
     "R6": {
         "number": 6,
@@ -137,7 +137,7 @@
         "igp": "ospf",
         "eBGP_neighbor": ["R1", "R4"],
         "neighbors_border_interfaces":["3/0","3/0"],
-        "border_interfaces":[]
+        "border_interfaces":["1/0"]
     },
     "R10": {
         "number": 10,
@@ -151,7 +151,7 @@
         "igp": "ospf",
         "eBGP_neighbor": ["R2"],
         "neighbors_border_interfaces":["3/0"],
-        "border_interfaces":[]
+        "border_interfaces":["1/0"]
     },
     "R11": {
         "number": 11,
@@ -165,6 +165,6 @@
         "igp": "ospf",
         "eBGP_neighbor": ["R5"],
         "neighbors_border_interfaces":["3/0"],
-        "border_interfaces":[]
+        "border_interfaces":["1/0"]
     }
 }
