@@ -16,7 +16,8 @@
         "is_border_router": true,
         "as_number": 1,
         "igp": "rip",
-        "eBGP_neighbor": ["R4"]
+        "eBGP_neighbor": ["R4"],
+        "border_interfaces": ["1/0","2/0"]
     },
     "R2": {
         "number": 2,
@@ -152,3 +153,5 @@
         "eBGP_neighbor": []
     }
 }
+
+
