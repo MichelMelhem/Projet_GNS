@@ -14,13 +14,13 @@ class Router:
     is_border_router: bool
     as_number: int
     igp: str
+    as_level: int  
     eBGP_neighbor: List[str] = field(default_factory=list)
     providers: List[str] = field(default_factory=list)
     peers: List[str] = field(default_factory=list)
     customers: List[str] = field(default_factory=list)
     neighbors_border_interfaces: List[str] = field(default_factory=list)
     border_interfaces: List[str] = field(default_factory=list)
-    as_level: int
 
 def parse_router(data: dict) -> Router:
     """Convertit un dictionnaire JSON en objet Router."""
@@ -31,14 +31,15 @@ def parse_router(data: dict) -> Router:
         is_border_router=data["is_border_router"],
         as_number=data["as_number"],
         igp=data["igp"],
+        as_level=data["as_level"], 
         eBGP_neighbor=data.get("eBGP_neighbor", []),
         providers=data.get("providers", []),
         peers=data.get("peers", []),
         customers=data.get("customers", []),
         neighbors_border_interfaces=data.get("neighbors_border_interfaces", []),
         border_interfaces=data.get("border_interfaces", []),
-        as_level=data["as_level"]
     )
+
 
 def parse_routers(data: dict) -> Dict[str, Router]:
     """Transforme un dictionnaire JSON en un dictionnaire d'objets Router."""
