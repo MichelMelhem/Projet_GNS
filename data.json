@@ -141,7 +141,7 @@
 
         "is_border_router": true,
         "as_number": 3,
-        "igp": "ospf",
+        "igp": "none",
         "eBGP_neighbor": ["R1", "R4"],
         "neighbors_border_interfaces":["3/0","3/0"],
         "border_interfaces":["1/0"],
@@ -156,7 +156,7 @@
 
         "is_border_router": true,
         "as_number": 4,
-        "igp": "ospf",
+        "igp": "none",
         "eBGP_neighbor": ["R2"],
         "neighbors_border_interfaces":["3/0"],
         "border_interfaces":["1/0"],
@@ -171,7 +171,7 @@
 
         "is_border_router": true,
         "as_number": 5,
-        "igp": "ospf",
+        "igp": "none",
         "eBGP_neighbor": ["R5"],
         "neighbors_border_interfaces":["3/0"],
         "border_interfaces":["1/0"],
