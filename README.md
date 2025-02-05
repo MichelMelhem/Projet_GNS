@@ -9,8 +9,7 @@ Nous avons un réseau comportant 5 AS :
     -  AS4  :  R10
     -  AS5  :  R11
 Toutes sont configurées avec OSPF sauf l'AS1 qui tourne en RIP.
-Les AS1 et 2 sont peers entre elles, elles ont l'AS3 en provider et les AS 4 et 5 en customer. On a donc configuré BGP et ses policies en conséquence.
-
+Les AS1 et 2 sont peers entre elles, elles ont l'AS3 en provider et les AS 4 et 5 en customer. On a donc configuré BGP et les local pref des routes en conséquence.
 ## Exécution du script d'automatisation
 
 A partir du fichier d'intention (data.json) on produit et place les configurations dans les bons répertoires (il faut modifier dans le script la variable de la racine du projet). Il suffit d'exécuter script.py et les configurations se génèrent à partir du json.
